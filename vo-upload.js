@@ -11,12 +11,30 @@ import '../../node_modules/dropzone/dist/dropzone.js';
  */
 class VoUpload extends LitElement {
 	/**
+	 * Constructor.
+	 */
+	constructor() {
+		super();
+		Dropzone.autoDiscover = false;
+	}
+	
+	/**
+	 * Configuratie van de dropzone na de eerste rendering.
+	 */
+	firstUpdated() {
+		const element = this.shadowRoot.querySelector('#upload');
+		this.dropzone = new Dropzone(element, {
+			url: '/file/post'
+		});
+	}
+	
+	/**
 	 * Rendert het element.
 	 * 
 	 * @return {TemplateResult}
 	 */
     render() {
-    	return html`<div id="upload"></div>`;
+    	return html`<div id="upload" class="dropzone"></div>`;
     }
 }
 
