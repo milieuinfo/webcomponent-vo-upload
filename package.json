@@ -1,0 +1,53 @@
+{
+  "description": "Polymer vo-upload component",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milieuinfo/webcomponent-vo-upload.git"
+  },
+  "homepage": "https://github.com/milieuinfo/webcomponent-vo-upload#readme",
+  "name": "vo-upload",
+  "version": "0.0.1",
+  "directories": {
+    "test": "test",
+    "demo": "demo"
+  },
+  "devDependencies": {
+    "np": "3.0.4",
+    "polymer-cli": "1.9.0",
+    "wct-browser-legacy": "1.0.2"
+  },
+  "scripts": {
+    "clean": "rm -rf build node_modules build bower_components etc node",
+    "build": "npm run build:dist",
+    "build:docs": "polymer analyze vo-upload.js > analysis.json",
+    "build:dist": "polymer build",
+    "build:local": "npm run clean && bower install && npm install && npm run test && npm run build:dist && npm run build:docs",
+    "dev": "browser-sync start --proxy localhost:8080 --startPath / --serveStatic . --files .",
+    "test": "polymer test -l chrome,firefox --expanded",
+    "test:chrome": "polymer test -l chrome --expanded",
+    "test:firefox": "polymer test -l firefox --expanded",
+    "release": "np",
+    "release:testless": "np --yolo"
+  },
+  "publishConfig": {
+    "registry": "http://artifactory-pr-build.lb.cumuli.be:8081/artifactory/api/npm/acd-npm/"
+  },
+  "bugs": {
+    "url": "https://github.com/milieuinfo/webcomponent-vo-upload/issues"
+  },
+  "resolutions": {
+    "inherits": "2.0.3",
+    "samsam": "1.1.3",
+    "supports-color": "3.1.2",
+    "type-detect": "1.0.0"
+  },
+  "main": "vo-upload.js",
+  "dependencies": {
+    "@polymer/iron-component-page": "4.0.1",
+    "@polymer/iron-demo-helpers": "3.0.2",
+    "@polymer/lit-element": "0.6.2",
+    "@polymer/polymer": "3.1.0",
+    "@webcomponents/webcomponentsjs": "2.1.3",
+    "polymer-cli": "^1.8.1"
+  }
+}
