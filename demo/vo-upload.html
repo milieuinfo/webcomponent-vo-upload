@@ -1,25 +1,59 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-		<title>vo-upload demo</title>
-		
-		<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-		<script type="module">
-			import '../node_modules/@polymer/iron-demo-helpers/demo-snippet.js';
-			import '../vo-upload.js';
-		</script>
-	</head>
-	<body unresolved>
-		<div class="vertical-section-container centered">
-			<h3>Basis vo-upload demo</h3>
-			<demo-snippet class="centered-demo">
-				<template>
-					<vo-upload></vo-upload>
-				</template>
-			</demo-snippet>
-		</div>
-	</body>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <title>vo-upload demo</title>
+
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+    <script type="module">
+        import '../node_modules/@polymer/iron-demo-helpers/demo-snippet.js';
+        import '../vo-upload.js';
+    </script>
+
+    <script>
+        let fakeServer;
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)){ return; }
+            js = d.createElement(s); js.id = id;
+            js.onload = function() {
+                fakeServer = sinon.fakeServer.create();
+            };
+            js.src = "../node_modules/sinon/pkg/sinon.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'sinon'));
+    </script>
+</head>
+<body unresolved>
+<div class="vertical-section-container centered">
+    <h3>Basis vo-upload demo</h3>
+    <demo-snippet class="centered-demo">
+        <template>
+            <script>
+                const uploadElement = document.querySelector('vo-upload');
+
+                uploadElement.addEventListener('vo-upload-succes', function (event) {
+                    console.log(event);
+                    alert(event.detail.response.validatie);
+                });
+
+                uploadElement.addEventListener('vo-upload-fout', function (event) {
+                    console.log(event);
+                    alert(event.detail.fout);
+                });
+
+                uploadElement.addEventListener('vo-upload-versturen', function () {
+                    fakeServer.respondWith('POST', 'upload', [ 200, { 'Content-Type': 'application/json' }, '{ "validatie": "OK" }' ]);
+                    setTimeout(function() { fakeServer.respond(); }, 150);
+                });
+            </script>
+            <vo-upload url="upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="file"></vo-upload>
+        </template>
+    </demo-snippet>
+</div>
+</body>
 </html>
