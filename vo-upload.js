@@ -109,6 +109,10 @@ class VoUpload extends LitElement {
     		<link rel="stylesheet" type="text/css" href="../node_modules/dropzone/dist/min/basic.min.css">
     		<link rel="stylesheet" type="text/css" href="../node_modules/dropzone/dist/min/dropzone.min.css">
     		<style>
+    			:host {
+    				display: block;
+    			}
+    		
     			#upload {
     				border: 1px solid rgb(51, 51, 51);
     			}
