@@ -37,7 +37,7 @@ class VoUpload extends LitElement {
              */
             'toegelaten-mimetypes': Array,
             /**
-             * De maximum grootte van een bestand.
+             * De maximum grootte van een bestand in bytes.
              */
             'maximum-grootte': Number,
             /**
@@ -78,7 +78,7 @@ class VoUpload extends LitElement {
     }
 
     _dropzoneMaxFilesize() {
-        return this['maximum-grootte'] * 1024 * 1024
+        return this['maximum-grootte'] / 1024 / 1024
     }
 
     _dropzoneAcceptedFiles() {
