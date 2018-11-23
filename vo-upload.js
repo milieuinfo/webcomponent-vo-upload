@@ -34,7 +34,9 @@ class VoUpload extends LitElement {
 	 * @return {TemplateResult}
 	 */
     render() {
-    	return html`<div id="upload" class="dropzone"></div>`;
+    	return html`
+    		<div id="upload" class="dropzone"></div>
+    	`;
     }
 }
 
