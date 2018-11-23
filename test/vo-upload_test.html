@@ -7,13 +7,17 @@
 		<title>vo-upload test</title>
 
 		<script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-		<script src="../node_modules/wct-browser-legacy/browser.js"></script>
-	</head>
+		<script src="../node_modules/mocha/mocha.js"></script>
+		<script src="../node_modules/wct-mocha/wct-mocha.js"></script>
+		<script src="../node_modules/@polymer/test-fixture/test-fixture.js"></script>
+		<script src="../node_modules/chai/chai.js"></script>
+		<script src="../node_modules/sinon/pkg/sinon.js"></script>
+    </head>
 	
 	<body>
 		<test-fixture id="vo-upload-fixture">
 			<template>
-				<vo-upload></vo-upload>
+				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="bestand"></vo-upload>
 			</template>
 		</test-fixture>
 
@@ -21,7 +25,113 @@
 			import '../vo-upload';
 
 			suite('vo-upload', () => {
-				const should = chai.should();
+                const should = chai.should();
+
+				test('de dropzone wordt correct geconfigureerd', async () => {
+				    let configuredElement;
+				    let configuredOptions;
+
+                    const dropzonePrototype = Dropzone.prototype;
+                    window.Dropzone = function(element, options) {
+                        configuredElement = element;
+                        configuredOptions = options;
+				        return {}
+                    };
+				    window.Dropzone.prototype = dropzonePrototype;
+
+                    const element = fixture("vo-upload-fixture");
+                    await element.updateComplete;
+
+                    should.exist(configuredElement);
+                    assert.equal(configuredOptions.url, '/upload');
+                    assert.equal(configuredOptions.maxFilesize, 1);
+                    assert.equal(configuredOptions.acceptedFiles, '.txt,image/jpeg');
+                    assert.equal(configuredOptions.paramName, 'bestand');
+                });
+
+                test('de "vo-upload-versturen" event wordt afgevuurd vlak voor het verzenden van het bestand', (done) => {
+                    valideerEvent(
+                        'sending',
+						'vo-upload-versturen',
+                        (dropzoneEventFun) => {
+                            dropzoneEventFun(dropzoneBestand());
+                        },
+						(event) => {
+                            assert.deepEqual(bestand(), event.detail.bestand);
+                            done();
+						}
+					);
+                });
+
+                test('de "vo-upload-succes" event wordt afgevuurd wanneer het uploaden succesvol voltooid is', (done) => {
+                    const response = { foo: 'bar' };
+                    valideerEvent(
+                        'success',
+                        'vo-upload-succes',
+						(dropzoneEventFun) => {
+                            dropzoneEventFun(dropzoneBestand(), response);
+						},
+                        (event) => {
+                            assert.deepEqual(bestand(), event.detail.bestand);
+                            assert.deepEqual(response, event.detail.response);
+                            done();
+                        }
+                    );
+                });
+
+                test('de "vo-upload-fout" event wordt afgevuurd wanneer het uploaden niet kon geupload worden', (done) => {
+                    const fout = { foo: 'bar' };
+                    valideerEvent(
+                        'error',
+                        'vo-upload-fout',
+                        (dropzoneEventFun) => {
+                            dropzoneEventFun(dropzoneBestand(), fout);
+                        },
+                        (event) => {
+                            assert.deepEqual(bestand(), event.detail.bestand);
+                            assert.deepEqual(fout, event.detail.fout);
+                            done();
+                        }
+                    );
+                });
+
+                function valideerEvent(dropzoneEvent, voUploadEvent, dropzoneEventFunCaller, assertFun) {
+                    let dropzoneEventFun;
+
+                    const dropzonePrototype = Dropzone.prototype;
+                    window.Dropzone = function(element, options) {
+                        this.on = function(eventName, fn) {
+                            if(eventName === dropzoneEvent) {
+                                dropzoneEventFun = fn;
+                            }
+                        };
+                        options.init.call(this);
+                        return {}
+                    };
+                    window.Dropzone.prototype = dropzonePrototype;
+
+                    const element = fixture("vo-upload-fixture");
+                    element.addEventListener(voUploadEvent, (event) => { assertFun(event); });
+                    element.updateComplete.then(() => { dropzoneEventFunCaller(dropzoneEventFun); });
+				}
+
+                function bestand() {
+                    return {
+                        naam: 'myfilename.txt',
+                        grootte: 123,
+                        type: 'image/jpeg',
+                        laatstGewijzigd: 456
+                    }
+                }
+
+                function dropzoneBestand() {
+                    return {
+                        name: 'myfilename.txt',
+                        size: 123,
+                        type: 'image/jpeg',
+                        lastModified: 456
+                    }
+				}
 			});
 		</script>
 	</body>
