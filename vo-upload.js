@@ -1,5 +1,5 @@
 import { LitElement, html } from "../../node_modules/vodomg-litelement/@polymer/lit-element/lit-element.js";
-import '../../node_modules/vo-merklogo/vo-merklogo.js';
+import '../../node_modules/dropzone/dist/dropzone.js';
 
 /**
  * `vo-upload`
@@ -16,9 +16,8 @@ class VoUpload extends LitElement {
 	 * @return {TemplateResult}
 	 */
     render() {
-    	return html`
-    	`;
+    	return html`<div id="upload"></div>`;
     }
 }
 
-customElements.define('vo-header', VoUpload);
+customElements.define('vo-upload', VoUpload);
