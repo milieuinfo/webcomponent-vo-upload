@@ -16,7 +16,10 @@ class VoUpload extends LitElement {
     constructor() {
         super();
         Dropzone.autoDiscover = false;
-        Dropzone.prototype.defaultOptions.dictDefaultMessage = "Sleep bestanden naar hier om op te laden";
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = 'Sleep bestanden naar hier om op te laden';
+        Dropzone.prototype.defaultOptions.dictInvalidFileType = 'ONGELDIG_BESTANDSTYPE';
+        Dropzone.prototype.defaultOptions.dictFileTooBig = 'BESTAND_TE_GROOT';
+        Dropzone.prototype.defaultOptions.dictResponseError = 'HTTP_FOUT_{{statusCode}}';
     }
 
     static get properties() {
