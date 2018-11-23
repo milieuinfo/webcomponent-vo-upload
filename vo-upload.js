@@ -5,6 +5,16 @@ import '../../node_modules/dropzone/dist/dropzone.js';
  * `vo-upload`
  * De upload component voor gebruik in websites en applicaties van de Vlaamse overheid
  *
+ * ### Events
+ *
+ * De volgende events zijn beschikbaar:
+ *
+ * Event | Uitleg | Detail object
+ * ------|-------------|--------------
+ * `vo-upload-versturen` | Wordt afgevuurd vlak voordat het bestand verstuurd wordt naar de url. | { bestand }
+ * `vo-upload-succes` | Wordt afgevuurd wanneer een bestand succesvol werd opgeladen. | { bestand, response }
+ * `vo-upload-fout` | Wordt afgevuurd wanneer een bestand niet kon opgeladen worden vanwege een fout. | { bestand, fout }
+ *
  * @customElement
  * @polymer
  * @demo demo/vo-upload.html
