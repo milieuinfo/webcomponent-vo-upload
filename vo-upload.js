@@ -20,6 +20,8 @@ class VoUpload extends LitElement {
         Dropzone.prototype.defaultOptions.dictInvalidFileType = 'ONGELDIG_BESTANDSTYPE';
         Dropzone.prototype.defaultOptions.dictFileTooBig = 'BESTAND_TE_GROOT';
         Dropzone.prototype.defaultOptions.dictResponseError = 'HTTP_FOUT_{{statusCode}}';
+
+        this.param = this.param || 'file';
     }
 
     static get properties() {
@@ -43,10 +45,7 @@ class VoUpload extends LitElement {
             /**
              * Het veld in de multipart/form-data body waarin het bestand gestoken moet worden.
              */
-            param: {
-                type: String,
-                value: 'file'
-            }
+            param: String
         };
     }
 
