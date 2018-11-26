@@ -6,7 +6,7 @@
   },
   "homepage": "https://github.com/milieuinfo/webcomponent-vo-upload#readme",
   "name": "vo-upload",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "directories": {
     "test": "test",
     "demo": "demo"
