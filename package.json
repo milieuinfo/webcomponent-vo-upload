@@ -30,8 +30,6 @@
     "test": "polymer test -l chrome,firefox --expanded",
     "test:chrome": "polymer test -l chrome --expanded",
     "test:firefox": "polymer test -l firefox --expanded",
-    "copy": "npm run copy:css",
-    "copy:css": "copyfiles -f node_modules/dropzone/dist/min/*.css ./css",
     "release": "np",
     "release:testless": "np --yolo"
   },
