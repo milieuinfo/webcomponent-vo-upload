@@ -118,8 +118,8 @@ class VoUpload extends LitElement {
      */
     render() {
         return html`
-    		<link rel="stylesheet" type="text/css" href="../../node_modules/dropzone/dist/min/basic.min.css">
-    		<link rel="stylesheet" type="text/css" href="../../node_modules/dropzone/dist/min/dropzone.min.css">
+    		<link rel="stylesheet" type="text/css" href="css/basic.min.css">
+    		<link rel="stylesheet" type="text/css" href="css/dropzone.min.css">
     		<style>
     			:host {
     				display: block;
