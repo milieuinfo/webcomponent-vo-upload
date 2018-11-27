@@ -126,8 +126,20 @@
                     );
                 });
 
-				test('er kan een bestand manueel geupload worden via de upload knop', () => {
-					
+				test('er kan een bestand manueel geupload worden via de upload functie', async () => {
+                    const dropzonePrototype = Dropzone.prototype;
+					window.Dropzone = function(element, options) {
+				        return {
+							processQueue: () => {}
+						}
+                    };
+				    window.Dropzone.prototype = dropzonePrototype;
+
+					const element = fixture("vo-upload-fixture");
+					await element.updateComplete;
+					sinon.spy(element._dropzone, 'processQueue');
+					element.upload();
+					assert(element._dropzone.processQueue.called);
 				});
 
                 function valideerEvent(dropzoneEvent, voUploadEvent, dropzoneEventFunCaller, assertFun) {
