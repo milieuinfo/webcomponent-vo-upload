@@ -40,6 +40,11 @@ class VoUpload extends LitElement {
         this['auto-upload'] = this['auto-upload'] !== undefined;
     }
 
+    /**
+     * Geeft al de properties.
+     * 
+     * @return {Object}
+     */
     static get properties() {
         return {
             /**
@@ -89,6 +94,8 @@ class VoUpload extends LitElement {
 
     /**
      * Configuratie van de dropzone na de eerste rendering.
+     * 
+     * @Return {void}
      */
     firstUpdated() {
         const self = this;
@@ -125,10 +132,20 @@ class VoUpload extends LitElement {
         });
     }
 
+    /**
+     * Berekent de maximum bestand grootte.
+     * 
+     * @return {Number}
+     */
     _dropzoneMaxFilesize() {
         return this['maximum-grootte'] / 1024 / 1024
     }
 
+    /**
+     * Genereert een array die de toegelaten bestand types bepaalt.
+     * 
+     * @return {Array}
+     */
     _dropzoneAcceptedFiles() {
         if (this['toegelaten-extensies'] || this['toegelaten-mimetypes']) {
             return [].concat(this['toegelaten-extensies']).concat(this['toegelaten-mimetypes']).filter((item) => item != null).join(',');
@@ -137,6 +154,11 @@ class VoUpload extends LitElement {
         }
     }
 
+    /**
+     * Gooit een vo-upload event.
+     * 
+     * @return {void}
+     */
     _fireEvent(naam, data) {
         this.dispatchEvent(new CustomEvent('vo-upload-' + naam, {detail: data}));
     }
@@ -153,6 +175,8 @@ class VoUpload extends LitElement {
 
     /**
      * Upload alle bestanden die de gebruiker geselecteerd heeft.
+     * 
+     * @return {void}
      */
     upload() {
         this._dropzone.processQueue();
