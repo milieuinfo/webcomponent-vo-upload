@@ -45,31 +45,45 @@ class VoUpload extends LitElement {
             /**
              * URL waarnaar geupload moet worden.
              */
-            url: String,
+            url: {
+            	type: String
+            },
             /**
              * Een lijst van toegelaten extensies.
              */
-            'toegelaten-extensies': Array,
+            'toegelaten-extensies': {
+            	type: Array
+            },
             /**
              * Een lijst van toegelaten mimetypes.
              */
-            'toegelaten-mimetypes': Array,
+            'toegelaten-mimetypes': {
+            	type: Array
+            },
             /**
              * De maximum grootte van een bestand in bytes.
              */
-            'maximum-grootte': Number,
+            'maximum-grootte': {
+            	type: Number
+            },
             /**
              * Het veld in de multipart/form-data body waarin het bestand gestoken moet worden.
              */
-            param: String,
+            param: {
+            	type: String
+            },
             /**
              * Het maximum aantal bestanden dat men mag uploaden.
              */
-            'maximum-aantal-bestanden': Number,
+            'maximum-aantal-bestanden': {
+            	type: Number
+            },
             /**
-             * Moet er automatisch worden geupload?
+             * Bepaalt of er automatisch geupload moet worden.
              */
-            'auto-upload': Boolean
+            'auto-upload': {
+            	type: Boolean
+            }
         };
     }
 
