@@ -37,7 +37,6 @@ class VoUpload extends LitElement {
         Dropzone.prototype.defaultOptions.dictResponseError = 'HTTP_FOUT_{{statusCode}}';
 
         this.param = this.param || 'file';
-        this['auto-upload'] = this['auto-upload'] !== undefined;
     }
 
     /**
