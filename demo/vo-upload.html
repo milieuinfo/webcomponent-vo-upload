@@ -38,20 +38,35 @@
 
                 uploadElement.addEventListener('vo-upload-succes', function (event) {
                     console.log(event);
-                    alert(event.detail.response.validatie);
+                    alert("Succes: " + event.detail.response.validatie);
                 });
 
                 uploadElement.addEventListener('vo-upload-fout', function (event) {
                     console.log(event);
-                    alert(event.detail.fout);
+                    alert("Fout: " + event.detail.fout);
+                });
+
+                uploadElement.addEventListener('vo-upload-bestand-toegevoegd', function (event) {
+                    console.log(event);
+                    alert("Bestand toegevoegd: " + event.detail.bestand.naam);
+                });
+
+                uploadElement.addEventListener('vo-upload-bestand-verwijderd', function (event) {
+                    console.log(event);
+                    alert("Bestand verwijderd: " + event.detail.bestand.naam);
                 });
 
                 uploadElement.addEventListener('vo-upload-versturen', function () {
-                    fakeServer.respondWith('POST', 'upload', [ 200, { 'Content-Type': 'application/json' }, '{ "validatie": "OK" }' ]);
                     setTimeout(function() { fakeServer.respond(); }, 150);
                 });
+
+                function upload() {
+                    fakeServer.respondWith('POST', 'upload', [ 200, { 'Content-Type': 'application/json' }, '{ "validatie": "OK" }' ]);
+                    uploadElement.upload();
+                }
             </script>
             <vo-upload url="upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="file"></vo-upload>
+            <button onclick="upload()">Upload</button>
         </template>
     </demo-snippet>
 </div>

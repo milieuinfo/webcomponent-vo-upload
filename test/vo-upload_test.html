@@ -17,7 +17,7 @@
 	<body>
 		<test-fixture id="vo-upload-fixture">
 			<template>
-				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="bestand"></vo-upload>
+				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="bestand" auto-upload maximum-aantal-bestanden="1"></vo-upload>
 			</template>
 		</test-fixture>
 
@@ -47,9 +47,40 @@
                     assert.equal(configuredOptions.maxFilesize, 1);
                     assert.equal(configuredOptions.acceptedFiles, '.txt,image/jpeg');
                     assert.equal(configuredOptions.paramName, 'bestand');
+                    assert.equal(configuredOptions.maxFiles, 1);
+                    assert.equal(configuredOptions.autoProcessQueue, true);
+                    assert.equal(configuredOptions.addRemoveLinks, true);
                 });
 
-                test('de "vo-upload-versturen" event wordt afgevuurd vlak voor het verzenden van het bestand', (done) => {
+                test('het "vo-upload-bestand-toegevoegd" event wordt afgevuurd wanneer een bestand werd toegevoegd', (done) => {
+                    valideerEvent(
+                        'addedfile',
+                        'vo-upload-bestand-toegevoegd',
+                        (dropzoneEventFun) => {
+                            dropzoneEventFun(dropzoneBestand());
+                        },
+                        (event) => {
+                            assert.deepEqual(bestand(), event.detail.bestand);
+                            done();
+                        }
+                    );
+                });
+
+                test('het "vo-upload-bestand-verwijderd" event wordt afgevuurd wanneer een bestand werd toegevoegd', (done) => {
+                    valideerEvent(
+                        'removedfile',
+                        'vo-upload-bestand-verwijderd',
+                        (dropzoneEventFun) => {
+                            dropzoneEventFun(dropzoneBestand());
+                        },
+                        (event) => {
+                            assert.deepEqual(bestand(), event.detail.bestand);
+                            done();
+                        }
+                    );
+                });
+
+                test('het "vo-upload-versturen" event wordt afgevuurd vlak voor het verzenden van het bestand', (done) => {
                     valideerEvent(
                         'sending',
 						'vo-upload-versturen',
@@ -63,7 +94,7 @@
 					);
                 });
 
-                test('de "vo-upload-succes" event wordt afgevuurd wanneer het uploaden succesvol voltooid is', (done) => {
+                test('het "vo-upload-succes" event wordt afgevuurd wanneer het uploaden succesvol voltooid is', (done) => {
                     const response = { foo: 'bar' };
                     valideerEvent(
                         'success',
@@ -79,7 +110,7 @@
                     );
                 });
 
-                test('de "vo-upload-fout" event wordt afgevuurd wanneer het uploaden niet kon geupload worden', (done) => {
+                test('het "vo-upload-fout" event wordt afgevuurd wanneer het uploaden niet kon geupload worden', (done) => {
                     const fout = { foo: 'bar' };
                     valideerEvent(
                         'error',
@@ -117,6 +148,7 @@
 
                 function bestand() {
                     return {
+                        id: 'a12ea7e1-dea1-4908-916d-c18d5db98d25',
                         naam: 'myfilename.txt',
                         grootte: 123,
                         type: 'image/jpeg',
@@ -129,7 +161,10 @@
                         name: 'myfilename.txt',
                         size: 123,
                         type: 'image/jpeg',
-                        lastModified: 456
+                        lastModified: 456,
+						upload: {
+                            uuid: 'a12ea7e1-dea1-4908-916d-c18d5db98d25'
+						}
                     }
 				}
 			});
