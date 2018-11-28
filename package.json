@@ -30,7 +30,7 @@
     "build:docs": "polymer analyze vo-upload.js > analysis.json",
     "build:dist": "polymer build",
     "build:local": "npm run clean && bower install && npm install && npm run test && npm run build:dist && npm run build:docs",
-    "dev": "browser-sync start --proxy localhost:8080 --startPath / --serveStatic . --files .",
+    "dev": "polymer serve",
     "test": "polymer test -l chrome,firefox --expanded",
     "test:chrome": "polymer test -l chrome --expanded",
     "test:firefox": "polymer test -l firefox --expanded",

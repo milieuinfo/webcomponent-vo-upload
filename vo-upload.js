@@ -109,6 +109,7 @@ class VoUpload extends LitElement {
             autoProcessQueue: this['auto-upload'],
             init: function () {
                 this.on('addedfile', function(bestand) {
+                    self._truncateBestandenInQueue();
                     self._fireEvent('bestand-toegevoegd', { bestand: VoUpload._dropzoneBestandNaarVoUploadBestand(bestand) });
                 });
 
@@ -129,6 +130,16 @@ class VoUpload extends LitElement {
                 });
             }
         });
+    }
+
+    _truncateBestandenInQueue() {
+        const maxBestanden = this['maximum-aantal-bestanden'];
+        if(maxBestanden) {
+            const bestandenInQueue = this._dropzone.files;
+            bestandenInQueue.slice(0, bestandenInQueue.length - maxBestanden).forEach((file) => {
+                this._dropzone.removeFile(file);
+            });
+        }
     }
 
     /**

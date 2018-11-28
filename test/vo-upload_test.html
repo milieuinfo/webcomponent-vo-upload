@@ -17,7 +17,7 @@
 	<body>
 		<test-fixture id="vo-upload-fixture">
 			<template>
-				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="bestand" auto-upload maximum-aantal-bestanden="1"></vo-upload>
+				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="bestand" auto-upload maximum-aantal-bestanden="2"></vo-upload>
 			</template>
 		</test-fixture>
 
@@ -47,7 +47,7 @@
                     assert.equal(configuredOptions.maxFilesize, 1);
                     assert.equal(configuredOptions.acceptedFiles, '.txt,image/jpeg');
                     assert.equal(configuredOptions.paramName, 'bestand');
-                    assert.equal(configuredOptions.maxFiles, 1);
+                    assert.equal(configuredOptions.maxFiles, 2);
                     assert.equal(configuredOptions.autoProcessQueue, true);
                     assert.equal(configuredOptions.addRemoveLinks, true);
                 });
@@ -142,6 +142,39 @@
 					assert(element._dropzone.processQueue.called);
 				});
 
+                test('wanneer er meer bestanden worden toegevoegd dan toegelaten, worden de overtollige oude bestanden uit de queue verwijderd', (done) => {
+                    let dropzoneEventFun;
+                    const dropzonePrototype = Dropzone.prototype;
+                    const removeFileSpy = sinon.spy();
+                    const bestand1 = { name: 'file1' };
+                    const bestand2 = { name: 'file2' };
+                    const bestand3 = { name: 'file3' };
+                    const bestand4 = { name: 'file4' };
+                    window.Dropzone = function(element, options) {
+                        this.on = function(eventName, fn) {
+                            if(eventName === 'addedfile') {
+                                dropzoneEventFun = fn;
+                            }
+                        };
+                        options.init.call(this);
+                        return {
+                            files: [ bestand1, bestand2, bestand3, bestand4 ],
+                            removeFile: removeFileSpy
+						}
+                    };
+                    window.Dropzone.prototype = dropzonePrototype;
+
+                    const element = fixture("vo-upload-fixture");
+                    element.updateComplete.then(() => {
+                        dropzoneEventFun(dropzoneBestand());
+                        assert(removeFileSpy.calledWith(bestand1));
+                        assert(removeFileSpy.calledWith(bestand2));
+                        assert(removeFileSpy.neverCalledWith(bestand3));
+                        assert(removeFileSpy.neverCalledWith(bestand4));
+                        done();
+                    });
+                });
+
                 function valideerEvent(dropzoneEvent, voUploadEvent, dropzoneEventFunCaller, assertFun) {
                     let dropzoneEventFun;
 
@@ -153,7 +186,9 @@
                             }
                         };
                         options.init.call(this);
-                        return {}
+                        return {
+                            files: [ ]
+						}
                     };
                     window.Dropzone.prototype = dropzonePrototype;
 
