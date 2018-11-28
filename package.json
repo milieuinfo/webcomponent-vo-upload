@@ -14,11 +14,16 @@
   "devDependencies": {
     "np": "3.0.4",
     "polymer-cli": "1.9.1",
-    "@polymer/test-fixture": "^4.0.2",
+    "@polymer/test-fixture": "4.0.2",
+    "@polymer/iron-component-page": "4.0.1",
+    "@polymer/iron-demo-helpers": "3.0.2",
+    "@polymer/lit-element": "0.6.2",
+    "@webcomponents/webcomponentsjs": "2.1.3",
     "sinon": "7.1.1",
     "chai": "4.2.0",
     "mocha": "5.2.0",
-    "wct-mocha": "1.0.0"
+    "wct-mocha": "1.0.0",
+    "polymer-cli": "1.8.1",
   },
   "scripts": {
     "clean": "rm -rf build node_modules build bower_components etc node",
@@ -47,12 +52,6 @@
   },
   "main": "vo-upload.js",
   "dependencies": {
-    "@polymer/iron-component-page": "4.0.1",
-    "@polymer/iron-demo-helpers": "3.0.2",
-    "@polymer/lit-element": "0.6.2",
-    "@polymer/polymer": "3.1.0",
-    "@webcomponents/webcomponentsjs": "2.1.3",
-    "polymer-cli": "^1.8.1",
     "vodomg-litelement": "1.0.0",
     "dropzone": "5.5.1"
   }
