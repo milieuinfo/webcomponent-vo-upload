@@ -220,7 +220,7 @@ class VoUpload extends LitElement {
     				border: 1px solid #DB3434;
     				font-size: 0.8em;
     				text-decoration: none;
-    				padding: 2px 4px 3px 4px;
+    				padding: 5px;
     				line-height: 0.8em;
     			}
     			
