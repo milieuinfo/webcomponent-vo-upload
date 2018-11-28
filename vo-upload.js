@@ -29,9 +29,9 @@ class VoUpload extends LitElement {
         super();
         Dropzone.autoDiscover = false;
         Dropzone.prototype.defaultOptions.dictDefaultMessage = 'Sleep bestanden naar hier om op te laden';
-        Dropzone.prototype.defaultOptions.dictCancelUpload = 'Annuleer oplading';
+        Dropzone.prototype.defaultOptions.dictCancelUpload = 'annuleer oplading';
         Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = 'Ben je zeker dat je deze oplading wilt annuleren?';
-        Dropzone.prototype.defaultOptions.dictRemoveFile = 'Verwijder bestand';
+        Dropzone.prototype.defaultOptions.dictRemoveFile = 'verwijder bestand';
         Dropzone.prototype.defaultOptions.dictInvalidFileType = 'ONGELDIG_BESTANDSTYPE';
         Dropzone.prototype.defaultOptions.dictFileTooBig = 'BESTAND_TE_GROOT';
         Dropzone.prototype.defaultOptions.dictResponseError = 'HTTP_FOUT_{{statusCode}}';
@@ -196,15 +196,36 @@ class VoUpload extends LitElement {
     			}
     		
     			#upload {
-    				border: 1px solid rgb(51, 51, 51);
+    				color: rgb(116, 116, 116);
+    				border: 1px solid rgba(116, 116, 116, 0.2);
     			}
     			
     			#upload .dz-image {
     				border-radius: 0px;
+    				border: 1px solid rgba(116, 116, 116, 0.2);
     			}
     			
     			#upload .dz-error-message {
     			    display: none;
+    			}
+    			
+    			#upload .dz-remove {
+    				position: absolute;
+    				top: 100%;
+    				left: 0px;
+    				width: 100%;
+    				color: #DB3434;
+    				background: #FBE6E6;
+    				border: 1px solid #DB3434;
+    				font-size: 0.8em;
+    				text-decoration: none;
+    				padding: 2px 4px 3px 4px;
+    				line-height: 0.8em;
+    			}
+    			
+    			#upload .dz-remove:hover {
+    				background: #DB3434;
+    				color: #FBE6E6;
     			}
     		</style>
     		<div id="upload" class="dropzone"></div>
