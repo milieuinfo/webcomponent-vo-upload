@@ -22,8 +22,7 @@
     "sinon": "7.1.1",
     "chai": "4.2.0",
     "mocha": "5.2.0",
-    "wct-mocha": "1.0.0",
-    "polymer-cli": "1.8.1"
+    "wct-mocha": "1.0.0"
   },
   "scripts": {
     "clean": "rm -rf build node_modules build bower_components etc node",
