@@ -136,7 +136,7 @@ class VoUpload extends LitElement {
         const maxBestanden = this['maximum-aantal-bestanden'];
         if(maxBestanden) {
             const bestandenInQueue = this._dropzone.files;
-            bestandenInQueue.slice(0, bestandenInQueue.length - maxBestanden).forEach((file) => {
+            bestandenInQueue.slice(0, Math.max(0, bestandenInQueue.length - maxBestanden)).forEach((file) => {
                 this._dropzone.removeFile(file);
             });
         }

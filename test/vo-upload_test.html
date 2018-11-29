@@ -56,9 +56,7 @@
                     valideerEvent(
                         'addedfile',
                         'vo-upload-bestand-toegevoegd',
-                        (dropzoneEventFun) => {
-                            dropzoneEventFun(dropzoneBestand());
-                        },
+                        dropzoneEventFun => dropzoneEventFun(dropzoneBestand()),
                         (event) => {
                             assert.deepEqual(bestand(), event.detail.bestand);
                             done();
@@ -70,10 +68,8 @@
                     valideerEvent(
                         'removedfile',
                         'vo-upload-bestand-verwijderd',
-                        (dropzoneEventFun) => {
-                            dropzoneEventFun(dropzoneBestand());
-                        },
-                        (event) => {
+                        dropzoneEventFun => dropzoneEventFun(dropzoneBestand()),
+                        event => {
                             assert.deepEqual(bestand(), event.detail.bestand);
                             done();
                         }
@@ -84,10 +80,8 @@
                     valideerEvent(
                         'sending',
 						'vo-upload-versturen',
-                        (dropzoneEventFun) => {
-                            dropzoneEventFun(dropzoneBestand());
-                        },
-						(event) => {
+                        dropzoneEventFun => dropzoneEventFun(dropzoneBestand()),
+						event => {
                             assert.deepEqual(bestand(), event.detail.bestand);
                             done();
 						}
@@ -99,10 +93,8 @@
                     valideerEvent(
                         'success',
                         'vo-upload-succes',
-						(dropzoneEventFun) => {
-                            dropzoneEventFun(dropzoneBestand(), response);
-						},
-                        (event) => {
+						dropzoneEventFun => dropzoneEventFun(dropzoneBestand(), response),
+                        event => {
                             assert.deepEqual(bestand(), event.detail.bestand);
                             assert.deepEqual(response, event.detail.response);
                             done();
@@ -115,10 +107,8 @@
                     valideerEvent(
                         'error',
                         'vo-upload-fout',
-                        (dropzoneEventFun) => {
-                            dropzoneEventFun(dropzoneBestand(), fout);
-                        },
-                        (event) => {
+                        dropzoneEventFun => dropzoneEventFun(dropzoneBestand(), fout),
+                        event => {
                             assert.deepEqual(bestand(), event.detail.bestand);
                             assert.deepEqual(fout, event.detail.fout);
                             done();
@@ -142,14 +132,26 @@
 					assert(element._dropzone.processQueue.called);
 				});
 
-                test('wanneer er meer bestanden worden toegevoegd dan toegelaten, worden de overtollige oude bestanden uit de queue verwijderd', (done) => {
-                    let dropzoneEventFun;
-                    const dropzonePrototype = Dropzone.prototype;
-                    const removeFileSpy = sinon.spy();
+                test('wanneer er meer bestanden worden toegevoegd dan toegelaten, worden de overtollige oude bestanden uit de queue verwijderd', async () => {
                     const bestand1 = { name: 'file1' };
                     const bestand2 = { name: 'file2' };
                     const bestand3 = { name: 'file3' };
                     const bestand4 = { name: 'file4' };
+                    await valideerUploadQueueTruncation(2, [ bestand1, bestand2, bestand3, bestand4 ], [ bestand3, bestand4 ]);
+                });
+
+                test('wanneer het maximum aantal bestanden groter is dan het huidig aantal bestanden, wordt er niets uit de queue verwijderd', async () => {
+                    const bestand1 = { name: 'file1' };
+                    const bestand2 = { name: 'file2' };
+                    const bestand3 = { name: 'file3' };
+                    await valideerUploadQueueTruncation(4, [ bestand1, bestand2, bestand3 ], [ bestand1, bestand2, bestand3 ]);
+                });
+
+                async function valideerUploadQueueTruncation(maximumAantalBestanden, bestandenInQueueVoorTruncation, bestandenInQueueNaTruncation) {
+                    let dropzoneEventFun;
+
+                    const removeFileSpy = sinon.spy();
+                    const dropzonePrototype = Dropzone.prototype;
                     window.Dropzone = function(element, options) {
                         this.on = function(eventName, fn) {
                             if(eventName === 'addedfile') {
@@ -158,22 +160,24 @@
                         };
                         options.init.call(this);
                         return {
-                            files: [ bestand1, bestand2, bestand3, bestand4 ],
+                            files: bestandenInQueueVoorTruncation,
                             removeFile: removeFileSpy
-						}
+                        }
                     };
                     window.Dropzone.prototype = dropzonePrototype;
 
                     const element = fixture("vo-upload-fixture");
-                    element.updateComplete.then(() => {
-                        dropzoneEventFun(dropzoneBestand());
-                        assert(removeFileSpy.calledWith(bestand1));
-                        assert(removeFileSpy.calledWith(bestand2));
-                        assert(removeFileSpy.neverCalledWith(bestand3));
-                        assert(removeFileSpy.neverCalledWith(bestand4));
-                        done();
-                    });
-                });
+                    element['maximum-aantal-bestanden'] = maximumAantalBestanden;
+
+                    await element.updateComplete;
+					dropzoneEventFun(dropzoneBestand());
+
+					bestandenInQueueNaTruncation
+						.forEach(bestand => assert(removeFileSpy.neverCalledWith(bestand)));
+					bestandenInQueueVoorTruncation
+						.filter(bestand => bestandenInQueueNaTruncation.indexOf(bestand) === -1)
+						.forEach(bestand => assert(removeFileSpy.calledWith(bestand)));
+				}
 
                 function valideerEvent(dropzoneEvent, voUploadEvent, dropzoneEventFunCaller, assertFun) {
                     let dropzoneEventFun;
@@ -193,8 +197,8 @@
                     window.Dropzone.prototype = dropzonePrototype;
 
                     const element = fixture("vo-upload-fixture");
-                    element.addEventListener(voUploadEvent, (event) => { assertFun(event); });
-                    element.updateComplete.then(() => { dropzoneEventFunCaller(dropzoneEventFun); });
+                    element.addEventListener(voUploadEvent, event => assertFun(event));
+                    element.updateComplete.then(() => dropzoneEventFunCaller(dropzoneEventFun));
 				}
 
                 function bestand() {
