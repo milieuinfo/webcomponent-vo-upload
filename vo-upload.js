@@ -49,20 +49,18 @@ class VoUpload extends LitElement {
             /**
              * URL waarnaar geupload moet worden.
              */
-            url: {
+            url: String,
+            /**
+             * De toegelaten extensie.
+             */
+            'toegelaten-extensie': {
             	type: String
             },
             /**
-             * Een lijst van toegelaten extensies.
+             * De toegelaten mimetype.
              */
-            'toegelaten-extensies': {
-            	type: Array
-            },
-            /**
-             * Een lijst van toegelaten mimetypes.
-             */
-            'toegelaten-mimetypes': {
-            	type: Array
+            'toegelaten-mimetype': {
+            	type: String
             },
             /**
              * De maximum grootte van een bestand in bytes.
@@ -157,8 +155,8 @@ class VoUpload extends LitElement {
      * @return {Array}
      */
     _dropzoneAcceptedFiles() {
-        if (this['toegelaten-extensies'] || this['toegelaten-mimetypes']) {
-            return [].concat(this['toegelaten-extensies']).concat(this['toegelaten-mimetypes']).filter((item) => item != null).join(',');
+        if (this['toegelaten-extensie'] || this['toegelaten-mimetype']) {
+            return [].concat(this['toegelaten-extensie']).concat(this['toegelaten-mimetype']).filter((item) => item != null).join(',');
         } else {
             return null;
         }

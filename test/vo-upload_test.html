@@ -17,7 +17,7 @@
 	<body>
 		<test-fixture id="vo-upload-fixture">
 			<template>
-				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="bestand" auto-upload maximum-aantal-bestanden="2"></vo-upload>
+				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetype="image/jpeg" toegelaten-extensie="txt" param="bestand" auto-upload maximum-aantal-bestanden="2"></vo-upload>
 			</template>
 		</test-fixture>
 
@@ -45,7 +45,7 @@
                     should.exist(configuredElement);
                     assert.equal(configuredOptions.url, '/upload');
                     assert.equal(configuredOptions.maxFilesize, 1);
-                    assert.equal(configuredOptions.acceptedFiles, '.txt,image/jpeg');
+                    assert.equal(configuredOptions.acceptedFiles, 'txt,image/jpeg');
                     assert.equal(configuredOptions.paramName, 'bestand');
                     assert.equal(configuredOptions.maxFiles, 2);
                     assert.equal(configuredOptions.autoProcessQueue, true);
