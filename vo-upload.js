@@ -53,6 +53,12 @@ class VoUpload extends LitElement {
             	type: String
             },
             /**
+             * Bericht dat getoond wordt in de upload component. Standaard bericht is: `Sleep bestanden naar hier om op te laden`.
+             */
+            bericht: {
+            	type: String
+            },
+            /**
              * Een lijst van toegelaten extensies.
              */
             'toegelaten-extensies': {
@@ -98,6 +104,11 @@ class VoUpload extends LitElement {
      */
     firstUpdated() {
         const self = this;
+        
+        if (this.bericht) {
+        	Dropzone.prototype.defaultOptions.dictDefaultMessage = this.bericht;
+        }
+
         const element = this.shadowRoot.querySelector('#upload');
         this._dropzone = new Dropzone(element, {
             url: this.url,

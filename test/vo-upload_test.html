@@ -20,12 +20,18 @@
 				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies="txt" param="bestand" auto-upload maximum-aantal-bestanden="2"></vo-upload>
 			</template>
 		</test-fixture>
+		
+		<test-fixture id="vo-upload-bericht-fixture">
+			<template>
+				<vo-upload url="/upload" bericht="Dit is een persoonlijk bericht!"></vo-upload>
+			</template>
+		</test-fixture>
 
 		<script type="module">
 			import '../vo-upload';
-
 			suite('vo-upload', () => {
                 const should = chai.should();
+				const realDropzone = Dropzone;
 
 				test('de dropzone wordt correct geconfigureerd', async () => {
 				    let configuredElement;
@@ -146,6 +152,14 @@
                     const bestand3 = { name: 'file3' };
                     await valideerUploadQueueTruncation(4, [ bestand1, bestand2, bestand3 ], [ bestand1, bestand2, bestand3 ]);
                 });
+
+				test('er kan een persoonlijk bericht getoond worden', async () => {
+					window.Dropzone = realDropzone;
+					const element = fixture('vo-upload-bericht-fixture');
+					await element.updateComplete;
+					const message = element.shadowRoot.querySelector('#upload').querySelector('.dz-message').textContent;
+					assert.equal(message, 'Dit is een persoonlijk bericht!');
+				});
 
                 async function valideerUploadQueueTruncation(maximumAantalBestanden, bestandenInQueueVoorTruncation, bestandenInQueueNaTruncation) {
                     let dropzoneEventFun;
