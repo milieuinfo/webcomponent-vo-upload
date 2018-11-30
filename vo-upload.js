@@ -170,9 +170,8 @@ class VoUpload extends LitElement {
     _dropzoneAcceptedFiles() {
         if (this['toegelaten-extensies'] || this['toegelaten-mimetypes']) {
             return []
-                .concat(this['toegelaten-extensies'].map((extensie) => "." + extensie))
-                .concat(this['toegelaten-mimetypes'])
-                .filter((item) => item != null)
+                .concat((this['toegelaten-extensies'] || []).map((extensie) => "." + extensie))
+                .concat(this['toegelaten-mimetypes'] || [])
                 .join(',');
         } else {
             return null;

@@ -27,6 +27,13 @@
 			</template>
 		</test-fixture>
 
+		<test-fixture id="vo-upload-met-enkel-toegelaten-mimetypes-fixture">
+			<template>
+				<vo-upload url="/upload" toegelaten-mimetypes="image/jpeg"></vo-upload>
+			</template>
+		</test-fixture>
+
+
 		<script type="module">
 			import '../vo-upload';
 			suite('vo-upload', () => {
@@ -56,6 +63,22 @@
                     assert.equal(configuredOptions.maxFiles, 2);
                     assert.equal(configuredOptions.autoProcessQueue, true);
                     assert.equal(configuredOptions.addRemoveLinks, true);
+                });
+
+                test('het samenstellen van alle toegelaten bestandstypes werkt ook wanneer er enkel mimetypes geconfigureerd worden en geen extensies', async () => {
+                    let configuredOptions;
+
+                    const dropzonePrototype = Dropzone.prototype;
+                    window.Dropzone = function(element, options) {
+                        configuredOptions = options;
+                        return {}
+                    };
+                    window.Dropzone.prototype = dropzonePrototype;
+
+                    const element = fixture("vo-upload-met-enkel-toegelaten-mimetypes-fixture");
+                    await element.updateComplete;
+
+                    assert.equal(configuredOptions.acceptedFiles, 'image/jpeg');
                 });
 
                 test('het "vo-upload-bestand-toegevoegd" event wordt afgevuurd wanneer een bestand werd toegevoegd', (done) => {
