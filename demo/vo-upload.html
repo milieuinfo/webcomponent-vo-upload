@@ -67,7 +67,7 @@
 							fakeServer.respondWith('POST', 'upload', [ 200, { 'Content-Type': 'application/json' }, '{ "validatie": "OK" }' ]);
 						});
 					</script>
-					<vo-upload id="1" url="upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="file" auto-upload maximum-aantal-bestanden="1"></vo-upload>
+					<vo-upload id="1" url="upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies="txt" param="file" auto-upload maximum-aantal-bestanden="1"></vo-upload>
 		        </template>
 		    </demo-snippet>
 		</div>
@@ -88,8 +88,17 @@
 							element2.upload();
 						}
 					</script>
-					<vo-upload id="2" url="upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies=".txt" param="file" maximum-aantal-bestanden="1"></vo-upload>
+					<vo-upload id="2" url="upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies="txt" param="file" maximum-aantal-bestanden="1"></vo-upload>
 					<button onclick="upload()">Upload</button>
+		        </template>
+		    </demo-snippet>
+		</div>
+		
+		<div class="vertical-section-container centered">
+		    <h3>Basis vo-upload met persoonlijk bericht</h3>
+		    <demo-snippet class="centered-demo">
+		        <template>
+					<vo-upload url="upload" bericht="Dit is een persoonlijk bericht!" auto-upload></vo-upload>
 		        </template>
 		    </demo-snippet>
 		</div>
