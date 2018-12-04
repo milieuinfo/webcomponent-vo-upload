@@ -230,6 +230,10 @@ class VoUpload extends LitElement {
     				display: none;
     			}
     			
+    			#upload .dz-preview.dz-success .dz-success-mark {
+    				opacity: 0.6;
+    			}
+    			
     			#upload .dz-image {
     				border-radius: 0px;
     				border: 1px solid rgba(116, 116, 116, 0.2);
