@@ -226,6 +226,10 @@ class VoUpload extends LitElement {
     				border: 1px solid rgba(116, 116, 116, 0.2);
     			}
     			
+    			#upload .dz-preview:not(.dz-processing) .dz-progress {
+    				display: none;
+    			}
+    			
     			#upload .dz-image {
     				border-radius: 0px;
     				border: 1px solid rgba(116, 116, 116, 0.2);
