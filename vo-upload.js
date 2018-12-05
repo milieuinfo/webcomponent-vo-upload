@@ -142,6 +142,15 @@ class VoUpload extends LitElement {
             }
         });
     }
+    
+    /**
+     * Geeft het aantal bestanden dat in de queue staat om opgeladen te worden.
+     * 
+     * @return {Number}
+     */
+    getNumberOfQueuedFiles() {
+    	return this._dropzone.getQueuedFiles().length;
+    }
 
     _truncateBestandenInQueue() {
         const maxBestanden = this['maximum-aantal-bestanden'];
