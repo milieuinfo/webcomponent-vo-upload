@@ -142,6 +142,15 @@ class VoUpload extends LitElement {
             }
         });
     }
+    
+    /**
+     * Geeft het aantal bestanden dat in de queue staat om opgeladen te worden.
+     * 
+     * @return {Number}
+     */
+    getNumberOfQueuedFiles() {
+    	return this._dropzone.getQueuedFiles().length;
+    }
 
     _truncateBestandenInQueue() {
         const maxBestanden = this['maximum-aantal-bestanden'];
@@ -224,6 +233,14 @@ class VoUpload extends LitElement {
     			#upload {
     				color: rgb(116, 116, 116);
     				border: 1px solid rgba(116, 116, 116, 0.2);
+    			}
+    			
+    			#upload .dz-preview:not(.dz-processing) .dz-progress {
+    				display: none;
+    			}
+    			
+    			#upload .dz-preview.dz-success .dz-success-mark {
+    				opacity: 0.6;
     			}
     			
     			#upload .dz-image {

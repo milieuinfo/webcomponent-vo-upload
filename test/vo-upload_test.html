@@ -184,6 +184,29 @@
 					assert.equal(message, 'Dit is een persoonlijk bericht!');
 				});
 
+				test('het aantal bestanden in de queue kan opgevraagd worden', async () => {
+					Dropzone = realDropzone;
+					const element = fixture('vo-upload-bericht-fixture');
+					await element.updateComplete;
+					assert.equal(element.getNumberOfQueuedFiles(), 0);
+
+					var mockFile = { 
+						name: 'test.txt',
+						upload: {
+							uuid: ''
+						},
+						size: 12345,
+						type: {
+							match: () => {}
+						}
+					};
+
+					element._dropzone.addFile(mockFile);
+					assert.equal(element.getNumberOfQueuedFiles(), 1);
+					element._dropzone.addFile(mockFile);
+					assert.equal(element.getNumberOfQueuedFiles(), 2);
+				});
+
                 async function valideerUploadQueueTruncation(maximumAantalBestanden, bestandenInQueueVoorTruncation, bestandenInQueueNaTruncation) {
                     let dropzoneEventFun;
 
