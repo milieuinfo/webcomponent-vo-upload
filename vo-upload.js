@@ -233,6 +233,7 @@ class VoUpload extends LitElement {
     			#upload {
     				color: rgb(116, 116, 116);
     				border: 1px solid rgba(116, 116, 116, 0.2);
+    				min-height: 194px;
     			}
     			
     			#upload .dz-preview:not(.dz-processing) .dz-progress {
