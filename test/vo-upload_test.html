@@ -17,7 +17,7 @@
 	<body>
 		<test-fixture id="vo-upload-fixture">
 			<template>
-				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies="txt" param="bestand" auto-upload maximum-aantal-bestanden="2"></vo-upload>
+				<vo-upload url="/upload" maximum-grootte="1048576" toegelaten-mimetypes="image/jpeg" toegelaten-extensies="txt" param="bestand" auto-upload maximum-aantal-bestanden="2" timeout="10000"></vo-upload>
 			</template>
 		</test-fixture>
 		
@@ -63,6 +63,7 @@
                     assert.equal(configuredOptions.maxFiles, 2);
                     assert.equal(configuredOptions.autoProcessQueue, true);
                     assert.equal(configuredOptions.addRemoveLinks, true);
+                    assert.equal(configuredOptions.timeout, 10000);
                 });
 
                 test('het samenstellen van alle toegelaten bestandstypes werkt ook wanneer er enkel mimetypes geconfigureerd worden en geen extensies', async () => {

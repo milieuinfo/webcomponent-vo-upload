@@ -37,6 +37,7 @@ class VoUpload extends LitElement {
         Dropzone.prototype.defaultOptions.dictResponseError = 'HTTP_FOUT_{{statusCode}}';
 
         this.param = this.param || 'file';
+        this.timeout = this.timeout || 30000;  
     }
 
     /**
@@ -93,6 +94,12 @@ class VoUpload extends LitElement {
              */
             'auto-upload': {
             	type: Boolean
+            },
+            /**
+             * De timeout voor XHR requests in milliseconden
+             */
+            timeout: {
+                type: Number
             }
         };
     }
@@ -118,6 +125,7 @@ class VoUpload extends LitElement {
             addRemoveLinks: true,
             maxFiles: this['maximum-aantal-bestanden'],
             autoProcessQueue: this['auto-upload'],
+            timeout: this.timeout,
             init: function () {
                 this.on('addedfile', function(bestand) {
                     self._truncateBestandenInQueue();
