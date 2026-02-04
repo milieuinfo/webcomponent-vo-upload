@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "np": "3.0.4",
-    "polymer-cli": "1.9.1",
+    "polymer-cli": "1.9.11",
     "@polymer/test-fixture": "4.0.2",
     "@polymer/iron-component-page": "4.0.1",
     "@polymer/iron-demo-helpers": "3.0.2",
